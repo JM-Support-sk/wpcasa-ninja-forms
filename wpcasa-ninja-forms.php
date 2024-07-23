@@ -177,13 +177,19 @@ class WPSight_Ninja_Forms {
 	 *	@since 1.0.0
 	 */
 	public function listing_form_agent( $form_id ) {		
-		global $ninja_forms_loading;
-		
+		//global $ninja_forms_loading;
+
+		$ninja_forms_loading = Ninja_Forms()->form($form_id);
+
 		$_form_id	= absint( wpsight_get_option( 'ninja_listing_form_id' ) );
 		$_field_id	= absint( wpsight_get_option( 'ninja_listing_field_id' ) );
-		
-		if( $_form_id && $_field_id && $_form_id == $form_id )
-			$ninja_forms_loading->update_field_value( $_field_id, antispambot( get_the_author_meta( 'email' ) ) );
+  
+		if( $_form_id && $_field_id && $_form_id == $form_id ) {
+			$field = $ninja_forms_loading->get_field($_field_id);
+			$field->update_setting('default', antispambot(get_the_author_meta('email')));
+		}
+
+		//	$ninja_forms_loading->update_field_value( $_field_id, antispambot( get_the_author_meta( 'email' ) ) );
 		
 	}
 
